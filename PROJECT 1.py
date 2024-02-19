@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import os
+import re
+import csv
 
 Index_url = "https://books.toscrape.com/"
 Category_Url_Path = "catalogue/category/books/"
@@ -84,33 +86,36 @@ def download_and_save_image(image_url, category_name, book_number):
 def get_books_page(category_url):
     book_categories = []
     current_page = 1
-    # Infinite loop
+    page_url = category_url
+
     while True:
-        # Handling the case of the url not being absolute
-        if current_page == 1:
-            page_url = category_url
-        else:
-            page_url = category_url.replace('index.html', f'page-{current_page}.html')
-        
         response = requests.get(page_url)
         if not response.ok:
-            break  
+            break
 
         soup = BeautifulSoup(response.text, 'html.parser')
         book_links = soup.find_all('h3')
         if not book_links:
-            break  
-        # Get the category through the href tag and pass to the other page once finished
+            break
+
         for link in book_links:
-            a_tag = link.find('a')  
-            if a_tag and 'href' in a_tag.attrs:  
+            a_tag = link.find('a')
+            if a_tag and 'href' in a_tag.attrs:
                 book_url = a_tag['href']
-                
                 book_url = Index_url + 'catalogue/' + book_url.replace('../', '')
                 book_categories.append(book_url)
-        
-        current_page += 1  
-        
+
+        # Extract the page number from the URL
+        page_number_match = re.search(r'page-(\d+)\.html', page_url)
+        if page_number_match:
+            current_page = int(page_number_match.group(1))
+
+        # Create the URL for the next page
+        if current_page < 10:
+            page_url = category_url.replace('index.html', f'page-{current_page + 1}.html')
+        else:
+            page_url = category_url.replace('index.html', f'page-{current_page + 1}/index.html')
+
     return book_categories
 
 def scrape_books_category(category_url):
@@ -124,12 +129,20 @@ def scrape_books_category(category_url):
 
     return all_books_data
 
+
 def save_data_to_csv(data, filename):
-    with open(filename, mode='w', encoding='utf-8') as file:
+    fieldnames = [
+        'Product Page URL', 'UPC', 'Title', 'Price Including Tax', 
+        'Price Excluding Tax', 'Number Available', 'Product Description', 
+        'Category', 'Review Rating', 'Image URL'
+    ]
+    
+    with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        
         for book_data in data:
-            for key, value in book_data.items():
-                file.write(f"- {key}: {value}\n")
-            file.write("\n----------\n")
+            writer.writerow(book_data)
 
 def scrape_and_save_categories(category_urls):
     for name, category_url in category_urls.items():
