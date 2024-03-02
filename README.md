@@ -1,4 +1,4 @@
-# Web_scraper_OpenClassrooms
+# Web_scraper_BooksOnline
 
 #Extracteur de Livres
 
@@ -26,9 +26,17 @@ Pour utiliser ce script, exécutez-le dans un environnement où Python 3 est ins
 #Prérequis
 
 - Python 3.x
-- Bibliothèque `requests`
-- Bibliothèque `BeautifulSoup4`
+- Package `requests`
+- Package `BeautifulSoup4`
 
-Vous pouvez installer les bibliothèques requises en utilisant pip dans un terminal : pip install requests beautifulsoup4
+Vous pouvez installer les packages requises en utilisant pip dans un terminal : pip install requests beautifulsoup4
 
 Vous pouvez ouvrir votre terminal avec la commande windows + R et en tapant "cmd" dans la barre d'exécution.
+  
+Pour isoler ces packages dans un environnement virtuel, veuillez suivre ces instructions:
+- Installer le package 'virtualenv' avec la commande: pip install virtualenv
+- Donner le nom de votre choix à votre environnement (je choisi le nom Scraper): virtualenv Scraper
+- Quand vous utilisez votre environnement, activez le avec ces commandes:
+Windows: Scraper\Scripts\activate
+MacOS ou Linux: Source Scraper\bin\activate
+- Pour désactiver votre environnement: deactivate
