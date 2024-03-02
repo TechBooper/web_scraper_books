@@ -5,7 +5,6 @@ import re
 import csv
 
 Index_url = "https://books.toscrape.com/"
-Category_Url_Path = "catalogue/category/books/"
 
 def get_category_urls(base_url):
     response = requests.get(base_url)
@@ -50,7 +49,10 @@ def get_books_data(URL):
     price_incl_tax = clean_price(soup.select_one("th:contains('Price (incl. tax)') + td").text)
     price_excl_tax = clean_price(soup.select_one("th:contains('Price (excl. tax)') + td").text)
     number_available = soup.select_one("th:contains('Availability') + td").text
-    product_description = clean_description(soup.select_one("#product_description + p").text)
+    try:
+        product_description = clean_description(soup.select_one("#product_description + p").text)
+    except AttributeError:
+        product_description = "No description available"
     category = soup.select_one(".breadcrumb li:nth-child(3) a").text.strip()
     review_rating = soup.select_one(".star-rating")["class"][1] if soup.select_one(".star-rating") else "No rating"
     image_url = Index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
