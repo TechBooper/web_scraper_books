@@ -229,10 +229,11 @@ def scrape_and_save_categories(category_urls):
 
 
 def main():
+    # Main execution, useful only if running locally
+
     category_urls = get_category_urls(Index_url)
     scrape_and_save_categories(category_urls)
 
 
-# Main execution, useful only if running locally
 if __name__ == "__main__":
     main()
