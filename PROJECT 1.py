@@ -214,7 +214,12 @@ def scrape_and_save_categories(category_urls):
         else:
             print(f"No data found for category '{name}'...")
 
-# Main execution, useful only if running locally            
-if __name__ == "__main__":
+
+def main() :
     category_urls = get_category_urls(Index_url)
     scrape_and_save_categories(category_urls)
+ 
+
+# Main execution, useful only if running locally            
+if __name__ == "__main__":
+    main()
