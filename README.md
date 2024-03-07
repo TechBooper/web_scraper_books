@@ -1,42 +1,41 @@
-# Web_scraper_BooksOnline
+# Book Scraper
 
-## Extracteur de Livres
+## Code Features
 
-Ce script Python est conçu pour extraire les données des livres depuis "https://books.toscrape.com/", un site web dédié à la présentation d'une large variété de livres à travers différentes catégories. Il automatise la collecte d'informations à partir d'une liste de data demandées et produit un fichier csv contenant toutes ces informations ainsi qu'un directory images contenant toutes les images de chaque livres et de chaque catégorie.
+This Python script is designed to extract book data from "https://books.toscrape.com/", a website dedicated to showcasing a wide variety of books across different categories. It automates the collection of information from a list of requested data and produces a csv file containing all this information as well as a directory of images containing all the images of each book and each category. 
 
 ## Fonctionnalités
 
-- Extraire les catégories : Identifie et extrait automatiquement les catégories de livres du site web.
-- Collecter les données des livres : Pour chaque livre, le script collecte les détails incluant l'UPC, le titre, le prix (avec et sans taxe), la disponibilité, la description du produit, la catégorie, l'évaluation des critiques, et l'URL de l'image.
-- Télécharger les images : Télécharge et enregistre les images des livres dans un format de répertoire structuré.
-- Gestion de pagination : Navigue à travers plusieurs pages au sein de chaque catégorie pour assurer une collecte complète des données.
-- Sauvegarder les données : Enregistre les données extraites dans des fichiers CSV, organisés par catégorie de livre.
+- Extract categories: Identifies and automatically extracts book categories from the website.
+- Collect book data: For each book, the script collects details including the UPC, title, price (with and without tax), availability, product description, category, critic rating, and image URL.
+- Download images: Downloads and saves book images in a structured directory format.
+- Pagination management: Navigates through multiple pages within each category to ensure a complete data collection.
+- Save data: Saves the extracted data in CSV files, organized by book category.
 
-## Fonctionnement
+## Functions
 
-1. Extraire les catégories : Le script commence par récupérer la liste des catégories de livres depuis la page d'accueil du site web.
-2. Extraire les données des livres : Pour chaque catégorie, il extrait les données de tous les livres listés, gérant la pagination pour couvrir toutes les pages disponibles.
-3. Télécharger les images : L'image de chaque livre est téléchargée et sauvegardée dans un répertoire nommé selon la catégorie.
-4. Sauvegarder les données dans un CSV : Compile et sauvegarde les données des livres dans des fichiers CSV nommés selon le format `<nom_categorie>_livres.csv`.
+Extract categories: The script starts by retrieving the list of book categories from the homepage of the website.
+Extract book data: For each category, it extracts the data of all listed books, managing pagination to cover all available pages.
+Download images: The image of each book is downloaded and saved in a directory named after the category.
+Save data in a CSV: Compiles and saves the book data in CSV files named according to the format <category_name>_books.csv.
 
-## Utilisation
+## Usage
 
-Pour utiliser ce script, exécutez-le dans un environnement où Python 3 est installé ainsi que les bibliothèques requises : `requests` et `BeautifulSoup4` de `bs4`.
+To use this script, run it in an environment where Python 3 is installed along with the required libraries: requests and BeautifulSoup4 from bs4.
 
-## Prérequis
+Prerequisites
+Python 3.x
+Package requests
+Package BeautifulSoup4
+You can install the required packages using pip in a terminal: pip install requests beautifulsoup4
 
-- Python 3.x
-- Package `requests`
-- Package `BeautifulSoup4`
+You can open your terminal with the Windows + R command and typing "cmd" in the run bar.
 
-Vous pouvez installer les packages requises en utilisant pip dans un terminal : pip install requests beautifulsoup4
+To isolate these packages in a virtual environment, please follow these instructions:
 
-Vous pouvez ouvrir votre terminal avec la commande windows + R et en tapant "cmd" dans la barre d'exécution.
-  
-Pour isoler ces packages dans un environnement virtuel, veuillez suivre ces instructions:
-- Installer le package 'virtualenv' avec la commande: pip install virtualenv
-- Donner le nom de votre choix à votre environnement (je choisi le nom Scraper): virtualenv Scraper
-- Quand vous utilisez votre environnement, activez le avec ces commandes:
+Install the 'virtualenv' package with the command: pip install virtualenv
+Name your environment whatever you choose (I choose the name Scraper): virtualenv Scraper
+When using your environment, activate it with these commands:
 Windows: Scraper\Scripts\activate
-MacOS ou Linux: Source Scraper\bin\activate
-- Pour désactiver votre environnement: deactivate
+MacOS or Linux: Source Scraper\bin\activate
+To deactivate your environment: deactivate
