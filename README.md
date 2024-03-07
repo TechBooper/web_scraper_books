@@ -14,10 +14,13 @@ This Python script is designed to extract book data from "https://books.toscrape
 
 ## Functions
 
-Extract categories: The script starts by retrieving the list of book categories from the homepage of the website.
-Extract book data: For each category, it extracts the data of all listed books, managing pagination to cover all available pages.
-Download images: The image of each book is downloaded and saved in a directory named after the category.
-Save data in a CSV: Compiles and saves the book data in CSV files named according to the format <category_name>_books.csv.
+- Extract categories: The script starts by retrieving the list of book categories from the homepage of the website.
+
+- Extract book data: For each category, it extracts the data of all listed books, managing pagination to cover all available pages.
+
+- Download images: The image of each book is downloaded and saved in a directory named after the category.
+
+- Save data in a CSV: Compiles and saves the book data in CSV files named according to the format <category_name>_books.csv.
 
 ## Usage
 
