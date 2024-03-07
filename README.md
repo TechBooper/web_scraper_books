@@ -4,7 +4,7 @@
 
 This Python script is designed to extract book data from "https://books.toscrape.com/", a website dedicated to showcasing a wide variety of books across different categories. It automates the collection of information from a list of requested data and produces a csv file containing all this information as well as a directory of images containing all the images of each book and each category. 
 
-## Fonctionnalités
+## Features
 
 - Extract categories: Identifies and automatically extracts book categories from the website.
 - Collect book data: For each book, the script collects details including the UPC, title, price (with and without tax), availability, product description, category, critic rating, and image URL.
