@@ -23,11 +23,12 @@ Save data in a CSV: Compiles and saves the book data in CSV files named accordin
 
 To use this script, run it in an environment where Python 3 is installed along with the required libraries: requests and BeautifulSoup4 from bs4.
 
-Prerequisites
-Python 3.x
-Package requests
-Package BeautifulSoup4
-You can install the required packages using pip in a terminal: pip install requests beautifulsoup4
+## Prerequisites
+
+- Python 3.x
+- Package requests
+- Package BeautifulSoup4
+- You can install the required packages using pip in a terminal: pip install requests beautifulsoup4
 
 You can open your terminal with the Windows + R command and typing "cmd" in the run bar.
 
