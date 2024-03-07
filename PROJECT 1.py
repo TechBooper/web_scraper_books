@@ -1,12 +1,15 @@
-import requests
-from bs4 import BeautifulSoup
 import os
 import re
 import csv
 
+import requests
+
+from bs4 import BeautifulSoup
+
 Index_url = "https://books.toscrape.com/"
 
 def get_category_urls(base_url):
+    """Get the category URLs from the base URL and return a dictionary with the category names as keys and the URLs as values."""
     
     response = requests.get(base_url)
     if not response.ok:
@@ -33,22 +36,20 @@ def get_category_urls(base_url):
 
 
 def clean_description(description):
-    
-    # Ensures the description is readable
+    """# Ensures the description is readable"""
     
     description = re.sub(r'[^\x20-\x7E]', '', description)
     
     return description
 
-def clean_price(price):
-    
-    
-    # Remove any characters that are not digits or decimal point
+def clean_price(price):    
+    """# Remove any characters that are not digits or decimal point"""
     
     return re.sub(r'[^\d.]+', '', price)
 
 def get_books_data(URL):
-    # Get the URL and check response
+    """# Get the URL and check response"""
+
     response = requests.get(URL)
     response.encoding = 'utf-8'
     data_all = {}
@@ -97,9 +98,10 @@ def get_books_data(URL):
 
     return data_all
 
-# Save data in an image directory and have each category in his own directory
 
 def download_and_save_image(image_url, category_name, book_number):
+    """# Save data in an image directory and have each category in his own directory"""
+
     response = requests.get(image_url)
     if response.ok:
         # Create directory for the images if it doesn't exist
@@ -117,9 +119,9 @@ def download_and_save_image(image_url, category_name, book_number):
 
 
 
-# Handle pagination in cases of multiple pages in a category
 
 def get_books_page(category_url):
+    """# Handle pagination in cases of multiple pages in a category"""
     
     book_categories = []
     current_page = 1
