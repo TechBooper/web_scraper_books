@@ -6,7 +6,7 @@ import requests
 
 from bs4 import BeautifulSoup
 
-Index_url = "https://books.toscrape.com/"
+index_url = "https://books.toscrape.com/"
 
 
 def get_category_urls(base_url):
@@ -81,7 +81,7 @@ def get_books_data(URL):
         if soup.select_one(".star-rating")
         else "No rating"
     )
-    image_url = Index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
+    image_url = index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
 
      
 
@@ -143,7 +143,7 @@ def get_books_page(category_url):
             a_tag = link.find("a")
             if a_tag and "href" in a_tag.attrs:
                 book_url = a_tag["href"]
-                book_url = Index_url + "catalogue/" + book_url.replace("../", "")
+                book_url = index_url + "catalogue/" + book_url.replace("../", "")
                 book_categories.append(book_url)
 
         # Extract the page number from the URL
@@ -230,7 +230,7 @@ def scrape_and_save_categories(category_urls):
 def main():
     # Main execution, useful only if running locally
 
-    category_urls = get_category_urls(Index_url)
+    category_urls = get_category_urls(index_url)
     scrape_and_save_categories(category_urls)
 
 
