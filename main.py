@@ -59,8 +59,7 @@ def get_books_data(URL):
 
     if response.ok:
         soup = BeautifulSoup(response.text, "html.parser")
-
-    # Scrape the relevant data through the HTML elements
+   
     upc = soup.select_one("th:contains('UPC') + td").text
     title = soup.select_one("div.product_main h1").text
     price_incl_tax = clean_price(
@@ -84,8 +83,10 @@ def get_books_data(URL):
     )
     image_url = Index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
 
-    # Create a dictionary with all relevant data
+     
+
     data_all = {
+        """#Create a dictionary with all relevant data"""
         "Product Page URL": URL,
         "UPC": upc,
         "Title": title,
@@ -97,6 +98,7 @@ def get_books_data(URL):
         "Review Rating": review_rating,
         "Image URL": image_url,
     }
+    
 
     return data_all
 
@@ -105,8 +107,8 @@ def download_and_save_image(image_url, category_name, book_number):
     """# Save data in an image directory and have each category in his own directory"""
 
     response = requests.get(image_url)
+    """#Create directory for the images if it doesn't exist"""
     if response.ok:
-        # Create directory for the images if it doesn't exist
         formatted_name = category_name.replace(" ", "_").lower()
         category_dir = f"images/{formatted_name}"
         os.makedirs(category_dir, exist_ok=True)
@@ -161,12 +163,9 @@ def get_books_page(category_url):
 
     return book_categories
 
-
-# Call the scraping and pagination handling
-
-
 def scrape_books_category(category_url):
-
+    """#Call the scraping and pagination handling"""
+    
     book_urls = get_books_page(category_url)
     all_books_data = []
 
@@ -205,6 +204,7 @@ def save_data_to_csv(data, filename):
 
 
 def scrape_and_save_categories(category_urls):
+    """#Download and save each book's image"""
     for name, category_url in category_urls.items():
 
         print(f"Scraping category...: {name}")
@@ -215,11 +215,10 @@ def scrape_and_save_categories(category_urls):
             filename = f"{name.replace(' ', '_').lower()}_books.csv"
             for book_data in books_data:
 
-                # Download and save each book's image
-
                 download_and_save_image(book_data["Image URL"], name, book_number)
 
-                book_number += 1  # Add book number for the next image
+                book_number += 1
+                """#Add book number for the next image"""
 
             save_data_to_csv(books_data, filename)
 
