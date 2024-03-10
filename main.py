@@ -10,7 +10,7 @@ index_url = "https://books.toscrape.com/"
 
 
 def get_category_urls(base_url):
-    """Get the category URLs from the base URL and return a dictionary with the category names as keys and the URLs as values."""
+    """#Get the category URLs from the base URL and return a dictionary with the category names as keys and the URLs as values."""
 
     response = requests.get(base_url)
     if not response.ok:
@@ -59,7 +59,9 @@ def get_books_data(URL):
 
     if response.ok:
         soup = BeautifulSoup(response.text, "html.parser")
-   
+    else:
+        return data_all  # Return empty if the response is not ok
+
     upc = soup.select_one("th:contains('UPC') + td").text
     title = soup.select_one("div.product_main h1").text
     price_incl_tax = clean_price(
@@ -76,17 +78,24 @@ def get_books_data(URL):
     except AttributeError:
         product_description = "No description available"
     category = soup.select_one(".breadcrumb li:nth-child(3) a").text.strip()
-    review_rating = (
-        soup.select_one(".star-rating")["class"][1]
-        if soup.select_one(".star-rating")
-        else "No rating"
-    )
+    
+    """#Convert the word rating to star characters"""
+    
+    word_to_stars = {
+        "One": "★☆☆☆☆",
+        "Two": "★★☆☆☆",
+        "Three": "★★★☆☆",
+        "Four": "★★★★☆",
+        "Five": "★★★★★",
+        "No rating": "No rating"  # Handle the case where there is no rating
+    }
+    review_rating_class = soup.select_one(".star-rating")
+    review_rating_word = review_rating_class["class"][1] if review_rating_class else "No rating"
+    review_rating = word_to_stars.get(review_rating_word, "No rating")  # Default to "No rating" if not found
+
     image_url = index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
 
-     
-
     data_all = {
-        """#Create a dictionary with all relevant data"""
         "Product Page URL": URL,
         "UPC": upc,
         "Title": title,
@@ -98,10 +107,8 @@ def get_books_data(URL):
         "Review Rating": review_rating,
         "Image URL": image_url,
     }
-    
 
     return data_all
-
 
 def download_and_save_image(image_url, category_name, book_number):
     """# Save data in an image directory and have each category in his own directory"""
@@ -163,9 +170,10 @@ def get_books_page(category_url):
 
     return book_categories
 
+
 def scrape_books_category(category_url):
     """#Call the scraping and pagination handling"""
-    
+
     book_urls = get_books_page(category_url)
     all_books_data = []
 
@@ -228,8 +236,8 @@ def scrape_and_save_categories(category_urls):
 
 
 def main():
-    # Main execution, useful only if running locally
-
+    # Main execution
+    
     category_urls = get_category_urls(index_url)
     scrape_and_save_categories(category_urls)
 
