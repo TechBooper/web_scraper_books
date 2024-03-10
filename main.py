@@ -78,20 +78,24 @@ def get_books_data(URL):
     except AttributeError:
         product_description = "No description available"
     category = soup.select_one(".breadcrumb li:nth-child(3) a").text.strip()
-    
+
     """#Convert the word rating to star characters"""
-    
+
     word_to_stars = {
         "One": "★☆☆☆☆",
         "Two": "★★☆☆☆",
         "Three": "★★★☆☆",
         "Four": "★★★★☆",
         "Five": "★★★★★",
-        "No rating": "No rating"  # Handle the case where there is no rating
+        "No rating": "No rating",
     }
     review_rating_class = soup.select_one(".star-rating")
-    review_rating_word = review_rating_class["class"][1] if review_rating_class else "No rating"
-    review_rating = word_to_stars.get(review_rating_word, "No rating")  # Default to "No rating" if not found
+    review_rating_word = (
+        review_rating_class["class"][1] if review_rating_class else "No rating"
+    )
+    review_rating = word_to_stars.get(
+        review_rating_word, "No rating"
+    ) 
 
     image_url = index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
 
@@ -109,6 +113,7 @@ def get_books_data(URL):
     }
 
     return data_all
+
 
 def download_and_save_image(image_url, category_name, book_number):
     """# Save data in an image directory and have each category in his own directory"""
@@ -237,7 +242,7 @@ def scrape_and_save_categories(category_urls):
 
 def main():
     # Main execution
-    
+
     category_urls = get_category_urls(index_url)
     scrape_and_save_categories(category_urls)
 
