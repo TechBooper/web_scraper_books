@@ -37,9 +37,9 @@ You can open your terminal with the Windows + R command and typing "cmd" in the 
 
 To isolate these packages in a virtual environment, please follow these instructions:
 
-Install the 'virtualenv' package with the command: pip install virtualenv
-Name your environment whatever you choose (I choose the name Scraper): virtualenv Scraper
-When using your environment, activate it with these commands:
-Windows: Scraper\Scripts\activate
-MacOS or Linux: Source Scraper\bin\activate
-To deactivate your environment: deactivate
+- Install the 'virtualenv' package with the command: pip install virtualenv
+- Name your environment whatever you choose (I choose the name Scraper): virtualenv Scraper
+- When using your environment, activate it with these commands:
+- Windows: Scraper\Scripts\activate
+- MacOS or Linux: Source Scraper\bin\activate
+- To deactivate your environment: deactivate
