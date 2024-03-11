@@ -37,7 +37,7 @@ def get_category_urls(base_url):
 
 
 def clean_description(description):
-    """# Ensures the description is readable"""
+    """#Ensures the description is readable"""
 
     description = re.sub(r"[^\x20-\x7E]", "", description)
 
@@ -60,7 +60,7 @@ def get_books_data(URL):
     if response.ok:
         soup = BeautifulSoup(response.text, "html.parser")
     else:
-        return data_all  # Return empty if the response is not ok
+        return data_all  """#Return empty if the response is not ok"""
 
     upc = soup.select_one("th:contains('UPC') + td").text
     title = soup.select_one("div.product_main h1").text
@@ -125,10 +125,10 @@ def download_and_save_image(image_url, category_name, book_number):
         category_dir = f"images/{formatted_name}"
         os.makedirs(category_dir, exist_ok=True)
 
-        # Format the filename
+        """#Format the filename"""
         filename = f"{category_dir}/{formatted_name}_{book_number}.jpg"
 
-        # Write the image file
+        """#Write the image file"""
         with open(filename, "wb") as file:
             file.write(response.content)
         print(f"Image saved: {filename}")
@@ -158,12 +158,12 @@ def get_books_page(category_url):
                 book_url = index_url + "catalogue/" + book_url.replace("../", "")
                 book_categories.append(book_url)
 
-        # Extract the page number from the URL
+        """#Extract the page number from the URL"""
         page_number_match = re.search(r"page-(\d+)\.html", page_url)
         if page_number_match:
             current_page = int(page_number_match.group(1))
 
-        # Goto the URL for the next page
+        """# Goto the URL for the next page"""
         if current_page < 10:
             page_url = category_url.replace(
                 "index.html", f"page-{current_page + 1}.html"
@@ -213,7 +213,7 @@ def save_data_to_csv(data, filename):
             writer.writerow(book_data)
 
 
-# Calling all relevant functions and saving to CSV
+"""#Calling all relevant functions and saving to CSV"""
 
 
 def scrape_and_save_categories(category_urls):
@@ -222,7 +222,7 @@ def scrape_and_save_categories(category_urls):
 
         print(f"Scraping category...: {name}")
         books_data = scrape_books_category(category_url)
-        book_number = 1  # Initialize book number for image filenames
+        book_number = 1  """#Initialize book number for image filenames"""
         if books_data:
 
             filename = f"{name.replace(' ', '_').lower()}_books.csv"
@@ -241,7 +241,7 @@ def scrape_and_save_categories(category_urls):
 
 
 def main():
-    # Main execution
+    """#main execution"""
 
     category_urls = get_category_urls(index_url)
     scrape_and_save_categories(category_urls)
