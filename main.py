@@ -67,6 +67,7 @@ def get_books_data(URL):
     ###################################
     # TODO : Un peu plus de comments ici
     ###################################
+
     upc = soup.select_one("th:contains('UPC') + td").text
     title = soup.select_one("div.product_main h1").text
     price_incl_tax = clean_price(
@@ -218,7 +219,6 @@ def save_data_to_csv(data, filename):
             writer.writerow(book_data)
 
 
-"""Calling all relevant functions and saving to CSV"""
 
 
 def scrape_and_save_categories(category_urls):
