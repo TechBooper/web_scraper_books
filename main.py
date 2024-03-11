@@ -1,3 +1,7 @@
+"""
+Main script to scrape the books.toscrape.com website and save the data to a CSV file.
+"""
+
 import os
 import re
 import csv
@@ -10,7 +14,7 @@ index_url = "https://books.toscrape.com/"
 
 
 def get_category_urls(base_url):
-    """#Get the category URLs from the base URL and return a dictionary with the category names as keys and the URLs as values."""
+    """Get the category URLs from the base URL and return a dictionary with the category names as keys and the URLs as values."""
 
     response = requests.get(base_url)
     if not response.ok:
@@ -22,9 +26,7 @@ def get_category_urls(base_url):
     category_list = soup.select_one(".nav.nav-list ul")
 
     if not category_list:
-
         print("No category list found...")
-
         return []
 
     categories = category_list.find_all("a")
@@ -37,7 +39,7 @@ def get_category_urls(base_url):
 
 
 def clean_description(description):
-    """#Ensures the description is readable"""
+    """Ensures the description is readable"""
 
     description = re.sub(r"[^\x20-\x7E]", "", description)
 
@@ -45,13 +47,13 @@ def clean_description(description):
 
 
 def clean_price(price):
-    """# Remove any characters that are not digits or decimal point"""
+    """Remove any characters that are not digits or decimal point"""
 
     return re.sub(r"[^\d.]+", "", price)
 
 
 def get_books_data(URL):
-    """# Get the URL and check response"""
+    """Get the URL and check response"""
 
     response = requests.get(URL)
     response.encoding = "utf-8"
@@ -60,7 +62,11 @@ def get_books_data(URL):
     if response.ok:
         soup = BeautifulSoup(response.text, "html.parser")
     else:
-        return data_all  """#Return empty if the response is not ok"""
+        return data_all  # Return empty if the response is not ok"""
+
+    ###################################
+    # TODO : Un peu plus de comments ici
+    ###################################
 
     upc = soup.select_one("th:contains('UPC') + td").text
     title = soup.select_one("div.product_main h1").text
@@ -71,6 +77,7 @@ def get_books_data(URL):
         soup.select_one("th:contains('Price (excl. tax)') + td").text
     )
     number_available = soup.select_one("th:contains('Availability') + td").text
+
     try:
         product_description = clean_description(
             soup.select_one("#product_description + p").text
@@ -79,7 +86,7 @@ def get_books_data(URL):
         product_description = "No description available"
     category = soup.select_one(".breadcrumb li:nth-child(3) a").text.strip()
 
-    """#Convert the word rating to star characters"""
+    """Convert the word rating to star characters"""
 
     word_to_stars = {
         "One": "★☆☆☆☆",
@@ -93,9 +100,7 @@ def get_books_data(URL):
     review_rating_word = (
         review_rating_class["class"][1] if review_rating_class else "No rating"
     )
-    review_rating = word_to_stars.get(
-        review_rating_word, "No rating"
-    ) 
+    review_rating = word_to_stars.get(review_rating_word, "No rating")
 
     image_url = index_url + soup.select_one("div.item.active img")["src"].lstrip("../")
 
@@ -116,26 +121,27 @@ def get_books_data(URL):
 
 
 def download_and_save_image(image_url, category_name, book_number):
-    """# Save data in an image directory and have each category in his own directory"""
+    """Save data in an image directory and have each category in his own directory"""
 
     response = requests.get(image_url)
-    """#Create directory for the images if it doesn't exist"""
+
+    # Create directory for the images if it doesn't exist
     if response.ok:
         formatted_name = category_name.replace(" ", "_").lower()
         category_dir = f"images/{formatted_name}"
         os.makedirs(category_dir, exist_ok=True)
 
-        """#Format the filename"""
+        # Format the filename
         filename = f"{category_dir}/{formatted_name}_{book_number}.jpg"
 
-        """#Write the image file"""
+        # Write the image file
         with open(filename, "wb") as file:
             file.write(response.content)
         print(f"Image saved: {filename}")
 
 
 def get_books_page(category_url):
-    """# Handle pagination in cases of multiple pages in a category"""
+    """Handle pagination in cases of multiple pages in a category"""
 
     book_categories = []
     current_page = 1
@@ -158,12 +164,12 @@ def get_books_page(category_url):
                 book_url = index_url + "catalogue/" + book_url.replace("../", "")
                 book_categories.append(book_url)
 
-        """#Extract the page number from the URL"""
+        # Extract the page number from the URL
         page_number_match = re.search(r"page-(\d+)\.html", page_url)
         if page_number_match:
             current_page = int(page_number_match.group(1))
 
-        """# Goto the URL for the next page"""
+        # Goto the URL for the next page
         if current_page < 10:
             page_url = category_url.replace(
                 "index.html", f"page-{current_page + 1}.html"
@@ -177,7 +183,7 @@ def get_books_page(category_url):
 
 
 def scrape_books_category(category_url):
-    """#Call the scraping and pagination handling"""
+    """Call the scraping and pagination handling"""
 
     book_urls = get_books_page(category_url)
     all_books_data = []
@@ -213,16 +219,16 @@ def save_data_to_csv(data, filename):
             writer.writerow(book_data)
 
 
-"""#Calling all relevant functions and saving to CSV"""
 
 
 def scrape_and_save_categories(category_urls):
-    """#Download and save each book's image"""
+    """Download and save each book's image"""
     for name, category_url in category_urls.items():
 
         print(f"Scraping category...: {name}")
         books_data = scrape_books_category(category_url)
-        book_number = 1  """#Initialize book number for image filenames"""
+        book_number = 1  # Initialize book number for image filename
+
         if books_data:
 
             filename = f"{name.replace(' ', '_').lower()}_books.csv"
@@ -231,7 +237,7 @@ def scrape_and_save_categories(category_urls):
                 download_and_save_image(book_data["Image URL"], name, book_number)
 
                 book_number += 1
-                """#Add book number for the next image"""
+                """Add book number for the next image"""
 
             save_data_to_csv(books_data, filename)
 
@@ -241,7 +247,7 @@ def scrape_and_save_categories(category_urls):
 
 
 def main():
-    """#main execution"""
+    """main execution"""
 
     category_urls = get_category_urls(index_url)
     scrape_and_save_categories(category_urls)
